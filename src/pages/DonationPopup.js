@@ -2,73 +2,106 @@ import React, { useState, useEffect } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 
 const DonationPopup = ({ onClose, initialMethod }) => {
+  // State variables to manage form inputs and UI feedback
   const [selectedMethod, setSelectedMethod] = useState(initialMethod || '');
   const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('UGX'); // State for selected currency, defaults to UGX
   const [donorName, setDonorName] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
   const [donationFrequency, setDonationFrequency] = useState('one-time'); // 'one-time' or 'monthly'
   const [feedback, setFeedback] = useState({ message: '', type: '' }); // For success/error messages
 
-  // --- useEffect to handle body scroll ---
-  useEffect(() => {
-    // When the component mounts (pop-up opens)
-    document.body.style.overflow = 'hidden';
+  // --- Currency Data ---
+  // Array of popular currencies for the dropdown
+  const currencies = [
+    { value: 'UGX', label: 'Ugandan Shilling (UGX)' },
+    { value: 'KES', label: 'Kenyan Shilling (KES)' },
+    { value: 'TZS', label: 'Tanzanian Shilling (TZS)' },
+    { value: 'USD', label: 'US Dollar (USD)' },
+    { value: 'EUR', label: 'Euro (EUR)' },
+    { value: 'GBP', label: 'British Pound (GBP)' },
+    // Add more currencies here if needed
+  ];
 
-    // When the component unmounts (pop-up closes)
+  // --- useEffect Hook for Body Scroll Lock ---
+  // Prevents background scrolling when the popup is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'; // Disable scroll on mount
     return () => {
-      document.body.style.overflow = 'unset'; // Or 'auto' or ''
+      document.body.style.overflow = 'unset'; // Re-enable scroll on unmount (popup close)
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount and unmount
 
+  // --- useEffect Hook for Initial Payment Method and Feedback Reset ---
+  // Sets the initial payment method if provided and valid, and resets feedback
   useEffect(() => {
-    // Set initial method only if it's one of the new valid options
     const validMethods = ['M-Pesa', 'Flutterwave', 'Stripe', 'PayPal'];
     if (initialMethod && validMethods.includes(initialMethod)) {
       setSelectedMethod(initialMethod);
     } else {
-      setSelectedMethod(''); // Clear if invalid initial method
+      setSelectedMethod(''); // Clear if an invalid initial method is passed
     }
-  }, [initialMethod]);
+    setFeedback({ message: '', type: '' }); // Clear feedback when popup state changes
+  }, [initialMethod]); // Reruns if initialMethod prop changes
 
+  // --- Handlers for Input Changes ---
+
+  // Handles changes for the donation amount input
   const handleAmountChange = (e) => {
     const value = e.target.value;
-    // Allow empty string or numbers with optional decimal
+    // Allows only empty string or numbers (integers or decimals)
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setAmount(value);
     }
-    setFeedback({ message: '', type: '' }); // Clear feedback on input change
+    setFeedback({ message: '', type: '' }); // Clear feedback on any input change
   };
 
-  // Handle frequency change
+  // Handles changes for the currency dropdown selection
+  const handleCurrencyChange = (e) => {
+    setCurrency(e.target.value);
+    setFeedback({ message: '', type: '' }); // Clear feedback on currency change
+  };
+
+  // Handles changes for the donation frequency radio buttons
   const handleFrequencyChange = (e) => {
     setDonationFrequency(e.target.value);
     setFeedback({ message: '', type: '' }); // Clear feedback on frequency change
   };
 
+  // Handles the main form submission for payment processing
   const handlePaymentSubmit = async (e) => {
-    e.preventDefault();
-    setFeedback({ message: '', type: '' }); // Clear previous feedback
+    e.preventDefault(); // Prevent default form submission behavior
+    setFeedback({ message: '', type: '' }); // Clear previous feedback messages
 
+    // --- Form Validation ---
     if (!amount || parseFloat(amount) <= 0) {
       setFeedback({ message: 'Please enter a valid donation amount.', type: 'error' });
       return;
     }
-    if (!selectedMethod) {
+    if (!currency) { // Ensure a currency has been selected
+      setFeedback({ message: 'Please select a currency.', type: 'error' });
+      return;
+    }
+    if (!selectedMethod) { // Ensure a payment method has been selected
       setFeedback({ message: 'Please select a payment method.', type: 'error' });
       return;
     }
 
-    console.log(`Initiating ${donationFrequency} donation of UGX ${amount} via ${selectedMethod}...`);
+    // Log data for debugging/development purposes
+    console.log(`Initiating ${donationFrequency} donation of ${currency} ${amount} via ${selectedMethod}...`);
 
     try {
+      // --- Backend API Call (Simulated) ---
+      // In a real application, replace this with your actual backend endpoint
+      // and ensure the data sent matches what your API expects.
       const response = await fetch('/api/process-donation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: parseFloat(amount),
-          currency: 'UGX', // Keeping UGX as it was previously specified. Adjust if needed.
+          amount: parseFloat(amount), // Convert amount to a number
+          currency: currency,          // Send the selected currency
           paymentMethod: selectedMethod,
           donationFrequency: donationFrequency,
           donorInfo: {
@@ -78,25 +111,32 @@ const DonationPopup = ({ onClose, initialMethod }) => {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json(); // Parse the JSON response from the backend
 
-      if (response.ok) {
+      if (response.ok) { // Check if the response status is 2xx (success)
         setFeedback({ message: data.message || 'Donation initiated successfully! Thank you for your support.', type: 'success' });
-        // Optionally close after a delay for user to read message
+        // Optionally close the popup after a delay to allow the user to read the success message
         setTimeout(() => {
-          onClose();
+          onClose(); // Call the onClose prop to close the popup
         }, 3000); // Close after 3 seconds
       } else {
+        // Handle server-side errors
         setFeedback({ message: data.message || 'Donation failed: An unknown error occurred.', type: 'error' });
         console.error('Backend error:', data);
       }
     } catch (error) {
+      // Handle network or other client-side errors
       console.error('Error sending donation request to backend:', error);
       setFeedback({ message: 'An error occurred during the donation process. Please try again.', type: 'error' });
     }
   };
 
+  // --- Render Payment Method Specific Information ---
+  // Displays instructions based on the selected payment method
   const renderPaymentMethodInfo = () => {
+    // Format the amount for display with the selected currency
+    const amountDisplay = `${amount || '0'} ${currency}`;
+
     switch (selectedMethod) {
       case 'M-Pesa':
         return (
@@ -114,14 +154,14 @@ const DonationPopup = ({ onClose, initialMethod }) => {
               <li>Select **"Pay Bill"**.</li>
               <li>Enter Business No.: <span className="font-bold text-lg">XXXXXX</span> (Replace with your actual Pay Bill Number)</li>
               <li>Enter Account No.: <span className="font-bold text-lg">SSN_DONATION</span> (Or your organization's specific account identifier)</li>
-              <li>Enter Amount: <span className="font-bold text-lg">KES {amount || '0'}</span> (Note: Currency shown as KES as M-Pesa is primarily KES)</li>
+              <li>Enter Amount: <span className="font-bold text-lg">{amountDisplay}</span></li> {/* Displays amount with selected currency */}
               <li>Enter your M-Pesa PIN and Confirm.</li>
             </ol>
             <p className="mt-3 text-sm font-medium">
               *You will receive an M-Pesa confirmation SMS. Your generosity is deeply appreciated!*
             </p>
             <p className="mt-2 text-xs italic text-gray-600">
-                Note: While the form processes UGX, M-Pesa transactions are typically in KES. Please ensure currency conversion is handled by the donor or backend.
+                Note: M-Pesa transactions are primarily in KES. If you selected a different currency, please ensure conversion is handled on your end.
             </p>
           </div>
         );
@@ -130,7 +170,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
           <div className="bg-blue-50 p-4 rounded-md text-blue-800">
             <h4 className="font-semibold mb-2">Flutterwave Payment:</h4>
             <p className="mb-2 text-sm">
-              You will be securely redirected to Flutterwave's payment gateway to complete your {donationFrequency} transaction. Flutterwave supports various payment methods including cards, mobile money, and bank transfers across Africa.
+              You will be securely redirected to Flutterwave's payment gateway to complete your {donationFrequency} transaction for **{amountDisplay}**. Flutterwave supports various payment methods including cards, mobile money, and bank transfers across Africa.
             </p>
             {donationFrequency === 'monthly' && (
               <p className="text-sm font-medium text-blue-700">
@@ -147,7 +187,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
           <div className="bg-purple-50 p-4 rounded-md text-purple-800">
             <h4 className="font-semibold mb-2">Stripe Payment:</h4>
             <p className="mb-2 text-sm">
-              You will be securely redirected to Stripe's payment gateway to complete your {donationFrequency} transaction using your credit or debit card. Stripe is a leading global payment processor.
+              You will be securely redirected to Stripe's payment gateway to complete your {donationFrequency} transaction for **{amountDisplay}** using your credit or debit card. Stripe is a leading global payment processor.
             </p>
             {donationFrequency === 'monthly' && (
               <p className="text-sm font-medium text-purple-700">
@@ -164,7 +204,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
           <div className="bg-indigo-50 p-4 rounded-md text-indigo-800">
             <h4 className="font-semibold mb-2">PayPal Payment:</h4>
             <p className="mb-2 text-sm">
-              You will be redirected to PayPal's secure website to complete your {donationFrequency} donation. Please note that PayPal may handle transactions in USD or other major currencies, with conversion if applicable.
+              You will be redirected to PayPal's secure website to complete your {donationFrequency} donation for **{amountDisplay}**. Please note that PayPal may handle transactions in USD or other major currencies, with conversion if applicable.
             </p>
             {donationFrequency === 'monthly' && (
               <p className="text-sm font-medium text-indigo-700">
@@ -181,7 +221,9 @@ const DonationPopup = ({ onClose, initialMethod }) => {
   };
 
   return (
+    // Outer div for the modal overlay
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+      {/* Inner div for the modal content */}
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative animate-fade-in-up flex flex-col max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
@@ -195,22 +237,53 @@ const DonationPopup = ({ onClose, initialMethod }) => {
         <h2 className="text-2xl font-bold text-green-800 mb-4 text-center">Make a Donation</h2>
 
         <form onSubmit={handlePaymentSubmit} className="flex-grow flex flex-col">
-          {/* Donation Amount */}
-          <div className="mb-4">
-            <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Donation Amount (UGX)</label>
-            <input
-              type="text"
-              id="amount"
-              name="amount"
-              value={amount}
-              onChange={handleAmountChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="e.g., 50000"
-              required
-            />
+          {/* Feedback Message (Success/Error) */}
+          {feedback.message && (
+            <div className={`py-2 px-4 rounded-md text-center text-sm mb-4
+              ${feedback.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {feedback.message}
+            </div>
+          )}
+
+          {/* Donation Amount and Currency Selection Inputs */}
+          <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4">
+            {/* Donation Amount Input */}
+            <div className="flex-1 mb-4 sm:mb-0">
+              <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Donation Amount</label>
+              <input
+                type="text" // Using text to allow for more flexible input handling (e.g., empty string)
+                inputMode="numeric" // Suggests numeric keyboard on mobile devices
+                pattern="[0-9]*\.?[0-9]*" // Basic regex for numbers with optional decimal
+                id="amount"
+                name="amount"
+                value={amount}
+                onChange={handleAmountChange}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                placeholder="e.g., 50000"
+                required
+              />
+            </div>
+            {/* Currency Dropdown Selection */}
+            <div className="flex-1">
+              <label htmlFor="currency" className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+              <select
+                id="currency"
+                name="currency"
+                value={currency}
+                onChange={handleCurrencyChange} // Event handler for currency selection
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                required
+              >
+                {currencies.map((curr) => (
+                  <option key={curr.value} value={curr.value}>
+                    {curr.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          {/* Donation Frequency Selection */}
+          {/* Donation Frequency Selection (Radio Buttons) */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">Donation Frequency:</label>
             <div className="flex gap-4">
@@ -239,7 +312,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
             </div>
           </div>
 
-          {/* Donor Information (Optional) */}
+          {/* Donor Information (Optional) - Name and Email */}
           <div className="mb-4">
             <label htmlFor="donorName" className="block text-sm font-medium text-gray-700 mb-1">Your Name (Optional)</label>
             <input
@@ -308,24 +381,17 @@ const DonationPopup = ({ onClose, initialMethod }) => {
             </div>
           </div>
 
-          {/* Render payment method specific instructions/details */}
+          {/* Area to display payment method specific instructions/details */}
           <div className="mb-6">
             {renderPaymentMethodInfo()}
           </div>
 
-          {/* Feedback Message */}
-          {feedback.message && (
-            <div className={`py-2 px-4 rounded-md text-center text-sm mb-4
-              ${feedback.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              {feedback.message}
-            </div>
-          )}
-
           {/* Main Submit Button for the form */}
           <button
             type="submit"
+            // Button is disabled if amount is invalid, or if no method/currency is selected
             className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg font-semibold mt-auto"
-            disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod}
+            disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod || !currency}
           >
             Confirm & Donate
           </button>

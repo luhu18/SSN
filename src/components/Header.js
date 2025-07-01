@@ -7,7 +7,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md sticky top-0 w-full">
+    <header className="bg-white shadow-md sticky top-0 w-full z-50">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between fixed-top">
         {/* Logo/Brand - Added rounded-full to the img tag */}
         <div className="font-bold text-xl">
