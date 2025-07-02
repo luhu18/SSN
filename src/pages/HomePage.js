@@ -1,7 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link for navigation
+import { Link } from 'react-router-dom';
+
 // You might need to import specific Heroicons if you use them for impact highlights or program cards
 // import { SchoolIcon, TreeIcon, RecycleIcon } from '@heroicons/react/24/solid'; // Example icons
+//Images from Assets 
+import Image from '../Assets/planting.webp';
+import Camping from '../Assets/camping.webp';
+import Plant from '../Assets/plants2.webp'
+import Organic from '../Assets/Organic.webp'
 
 const HomePage = () => {
   return (
@@ -9,7 +15,7 @@ const HomePage = () => {
       {/* 1. Hero Section */}
       <section
         className="relative bg-cover bg-center text-white py-24 md:py-36 flex items-center justify-center text-center"
-        style={{ backgroundImage: 'url("/images/hero-students-garden.jpg")' }}
+        style={{ backgroundImage: 'url(/Assets/plants2.webp)' }}
         // IMPORTANT: Make sure you have an image at public/images/hero-students-garden.jpg
         // Optimize this image heavily!
       >
@@ -91,29 +97,29 @@ const HomePage = () => {
           <h2 className="text-3xl font-bold mb-12 text-gray-800">Our Key Programs</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Program Card 1: Organic Gardening */}
-            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col items-center text-center">
-              <img src="/images/program-gardening.jpg" alt="Organic Gardening" className="w-full h-40 object-cover rounded-md mb-4" />
+            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-2 flex flex-col items-center text-center">
+              <img src={Organic} alt="Organic Gardening" className="w-full h-40 object-cover rounded-md mb-4" />
               <h3 className="text-xl font-bold text-green-700 mb-2">Organic Gardening</h3>
               <p className="text-gray-700 text-sm">Empowering schools to grow their own food using sustainable methods.</p>
               <Link to="/programs" className="mt-4 text-green-600 hover:text-green-800 font-semibold text-sm">Learn More</Link>
             </div>
             {/* Program Card 2: Tree Planting */}
-            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col items-center text-center">
-              <img src="/images/program-tree-planting.jpg" alt="Tree Planting" className="w-full h-40 object-cover rounded-md mb-4" />
+            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-2 flex flex-col items-center text-center">
+              <img src={Image} alt="Tree Planting" className="w-full h-40 object-cover rounded-md mb-4" />
               <h3 className="text-xl font-bold text-green-700 mb-2">Tree Planting</h3>
               <p className="text-gray-700 text-sm">Restoring local ecosystems and providing shade and fruit for schools.</p>
               <Link to="/programs" className="mt-4 text-green-600 hover:text-green-800 font-semibold text-sm">Learn More</Link>
             </div>
             {/* Program Card 3: Food Forests */}
-            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col items-center text-center">
-              <img src="/images/program-food-forest.jpg" alt="Food Forests" className="w-full h-40 object-cover rounded-md mb-4" />
+            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-2 flex flex-col items-center text-center">
+              <img src={Plant} alt="Food Forests" className="w-full h-40 object-cover rounded-md mb-4" />
               <h3 className="text-xl font-bold text-green-700 mb-2">Food Forests</h3>
               <p className="text-gray-700 text-sm">Creating biodiverse, perennial food systems within school grounds.</p>
               <Link to="/programs" className="mt-4 text-green-600 hover:text-green-800 font-semibold text-sm">Learn More</Link>
             </div>
             {/* Program Card 4: Eco Summer Camps */}
-            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col items-center text-center">
-              <img src="/images/program-eco-camp.jpg" alt="Eco Summer Camps" className="w-full h-40 object-cover rounded-md mb-4" />
+            <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300 p-2 flex flex-col items-center text-center">
+              <img src={Camping} alt="Eco Summer Camps" className="w-full h-40 object-cover rounded-md mb-4" />
               <h3 className="text-xl font-bold text-green-700 mb-2">Eco Summer Camps</h3>
               <p className="text-gray-700 text-sm">Engaging students in fun, educational environmental activities during holidays.</p>
               <Link to="/programs" className="mt-4 text-green-600 hover:text-green-800 font-semibold text-sm">Learn More</Link>

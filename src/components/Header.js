@@ -13,7 +13,7 @@ const Header = () => {
         <div className="font-bold text-xl">
           <Link to="/" className="hover:text-green-800">
             {/* Added rounded-full class here */}
-            <img src='/ssn_logo.jpeg' alt='ssn logo' className="w-12 h-12 rounded-full" />
+            <img src='/ssn_logo.webp' alt='ssn logo' className="w-12 h-12 rounded-full" />
           </Link>
         </div>
 

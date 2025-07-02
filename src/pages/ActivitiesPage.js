@@ -4,6 +4,15 @@ import PageHeader from '../components/PageHeader';
 // Using a single placeholder image to avoid import errors for now
 // Remember to replace this with specific image imports and usage later!
 import Image from '../Assets/Gerden2.webp';
+import Cleanup from '../Assets/cleanups.webp'
+import Admin from '../Assets/admin.webp'
+import Plantt from '../Assets/planttt.webp'
+import Planting from '../Assets/planting.webp'
+import Image2 from '../Assets/plants2.webp';
+import Image3 from '../Assets/TAEW.webp';
+import Image4 from '../Assets/seedling planting.webp';
+import Image5 from '../Assets/school gerden.webp'
+
 
 
 const ActivitiesPage = () => {
@@ -19,21 +28,21 @@ const ActivitiesPage = () => {
     {
       title: "Cleanup Campaigns",
       description: "We organize regular cleanup campaigns in collaboration with schools and local communities. These initiatives not only beautify the environment but also educate participants on proper waste management, recycling, and the importance of a clean living space for health and sustainability.",
-      image: Image, // Placeholder image
+      image: Cleanup, // Placeholder image
       alt: "Students participating in a community cleanup campaign",
       date: "Monthly Events"
     },
     {
       title: "School Gardening Days",
       description: "Hands-on school gardening days are central to our practical approach to environmental education. Students actively participate in planting, nurturing, and harvesting, developing practical agricultural skills, fostering a connection with nature, and contributing to their school's food security.",
-      image: Image, // Placeholder image
+      image: Admin, // Placeholder image
       alt: "Students engaged in school gardening activities",
       date: "Seasonal Activities"
     },
     {
       title: "Environmental Education Workshops",
       description: "We conduct interactive workshops for students and teachers focused on critical environmental topics. These sessions cover climate change awareness, biodiversity conservation, water harvesting, sustainable agriculture techniques, and the promotion of eco-friendly practices within school compounds and beyond.",
-      image: Image, // Placeholder image
+      image: Plantt, // Placeholder image
       alt: "Students and teachers in an environmental education workshop",
       date: "Quarterly Workshops"
     },
@@ -51,11 +60,11 @@ const ActivitiesPage = () => {
 
   // Images for the photo gallery - all using the same placeholder image for now
   const galleryImages = [
-    { src: Image, alt: "Students cleaning up the school grounds." },
-    { src: Image, alt: "Children planting seedlings in a garden." },
-    { src: Image, alt: "Teachers attending an environmental education workshop." },
-    { src: Image, alt: "A thriving school garden with various crops." },
-    { src: Image, alt: "Students tending to a growing school garden." },
+    { src: Planting , alt: "Students cleaning up the school grounds." },
+    { src: Image4, alt: "Children planting seedlings in a garden." },
+    { src: Image3, alt: "Teachers attending an environmental education workshop." },
+    { src: Image5, alt: "A thriving school garden with various crops." },
+    { src: Image2, alt: "Students tending to a growing school garden." },
     { src: Image, alt: "Children learning about nature outdoors." },
   ];
 

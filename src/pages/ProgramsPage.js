@@ -20,7 +20,8 @@ const ProgramsPage = () => {
             <div className="space-y-12">
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/3">
-                  <img src={Image} alt="School garden with students" className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                  <img src={Image} alt="School garden with students" className="rounded-lg shadow-lg w-full h-auto object-cover" width={1200} 
+                  height={800}/>
                 </div>
                 <div className="md:w-2/3">
                   <h3 className="text-2xl font-semibold mb-4 text-green-600">School Gardens & Food Forests</h3>
@@ -38,7 +39,10 @@ const ProgramsPage = () => {
               
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/3 md:order-2">
-                  <img src={Image} alt="Students planting trees" className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                  <img src={Image} alt="Students planting trees" 
+                  className="rounded-lg shadow-lg w-full h-auto object-cover"
+                  width={1200} 
+                  height={800} />
                 </div>
                 <div className="md:w-2/3 md:order-1">
                   <h3 className="text-2xl font-semibold mb-4 text-green-600">Tree Planting & Reforestation</h3>
@@ -56,7 +60,8 @@ const ProgramsPage = () => {
               
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/3">
-                  <img src={Image} alt="Students at an eco-camp" className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                  <img src={Image} alt="Students at an eco-camp" className="rounded-lg shadow-lg w-full h-auto object-cover" width={1200} 
+                  height={800}/>
                 </div>
                 <div className="md:w-2/3">
                   <h3 className="text-2xl font-semibold mb-4 text-green-600">Eco Summer Camps</h3>
@@ -74,7 +79,8 @@ const ProgramsPage = () => {
               
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="md:w-1/3 md:order-2">
-                  <img src={Image} alt="Students participating in a cleanup campaign" className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                  <img src={Image} alt="Students participating in a cleanup campaign" className="rounded-lg shadow-lg w-full h-auto object-cover" width={1200} 
+                  height={800}/>
                 </div>
                 <div className="md:w-2/3 md:order-1">
                   <h3 className="text-2xl font-semibold mb-4 text-green-600">Cleanup Campaigns</h3>

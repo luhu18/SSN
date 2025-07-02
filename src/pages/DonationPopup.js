@@ -322,7 +322,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
               value={donorName}
               onChange={(e) => { setDonorName(e.target.value); setFeedback({ message: '', type: '' }); }}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="John Doe"
+              placeholder="Lucien Hussein"
             />
           </div>
           <div className="mb-6">
