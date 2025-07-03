@@ -257,7 +257,7 @@ const ContactPage = () => {
                   as I've made assumptions based on the footer's content and current location context.
                 */}
                  <iframe 
-                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15959.006249576356!2d32.5714088!3d0.3475968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbb0f1d3e8e2b%3A0x8f7d9c0b1e4c7d0!2sKampala%2C%20Uganda!5e0!3m2!1sen!2ske!4v1719246657989!5m2!1sen!2ske"
+                   src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d178.89782341226032!2d32.25050873698847!3d0.5282678712653968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x177cfd2cd22734e3%3A0x728ce0411c409f91!2sG7H2%2B76M%20Namayumba%20Cell%2C%20Namayumba%2C%20Uganda!3m2!1d0.5282167999999999!2d32.2505501!5e1!3m2!1sen!2ske!4v1751547347749!5m2!1sen!2ske"referrerpolicy="no-referrer-when-downgrade"
                    width="100%" 
                    height="100%" 
                    title='Our Location'
