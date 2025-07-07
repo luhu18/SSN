@@ -1,231 +1,91 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 
 const DonationPopup = ({ onClose, initialMethod }) => {
-  // State variables to manage form inputs and UI feedback
-  const [selectedMethod, setSelectedMethod] = useState(initialMethod || '');
+  const [method, setMethod] = useState(initialMethod || '');
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('UGX'); // State for selected currency, defaults to UGX
-  const [donorName, setDonorName] = useState('');
-  const [donorEmail, setDonorEmail] = useState('');
-  const [donationFrequency, setDonationFrequency] = useState('one-time'); // 'one-time' or 'monthly'
-  const [feedback, setFeedback] = useState({ message: '', type: '' }); // For success/error messages
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState(''); // Specific for M-Pesa
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(''); // For user feedback (success/error)
 
-  // --- Currency Data ---
-  // Array of popular currencies for the dropdown
-  const currencies = [
-    { value: 'UGX', label: 'Ugandan Shilling (UGX)' },
-    { value: 'KES', label: 'Kenyan Shilling (KES)' },
-    { value: 'TZS', label: 'Tanzanian Shilling (TZS)' },
-    { value: 'USD', label: 'US Dollar (USD)' },
-    { value: 'EUR', label: 'Euro (EUR)' },
-    { value: 'GBP', label: 'British Pound (GBP)' },
-    // Add more currencies here if needed
-  ];
+  const PAYPAL_CLIENT_ID = 'AfoBCl61mo1G8VpDX-t6-bfFrQsaWKQceiNbPnjAKLWoj-_3eZ-vS886rMpswG9JH1YymmRIzMgQdHPY'; // Example client ID, replace with your own!
 
-  // --- useEffect Hook for Body Scroll Lock ---
-  // Prevents background scrolling when the popup is open
   useEffect(() => {
-    document.body.style.overflow = 'hidden'; // Disable scroll on mount
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'unset'; // Re-enable scroll on unmount (popup close)
+      document.body.style.overflow = 'unset';
     };
-  }, []); // Empty dependency array ensures this runs only once on mount and unmount
+  }, []);
 
-  // --- useEffect Hook for Initial Payment Method and Feedback Reset ---
-  // Sets the initial payment method if provided and valid, and resets feedback
   useEffect(() => {
-    const validMethods = ['M-Pesa', 'Flutterwave', 'Stripe', 'PayPal'];
-    if (initialMethod && validMethods.includes(initialMethod)) {
-      setSelectedMethod(initialMethod);
-    } else {
-      setSelectedMethod(''); // Clear if an invalid initial method is passed
+    if (initialMethod) {
+      setMethod(initialMethod);
     }
-    setFeedback({ message: '', type: '' }); // Clear feedback when popup state changes
-  }, [initialMethod]); // Reruns if initialMethod prop changes
+    setMessage('');
+  }, [initialMethod]);
 
-  // --- Handlers for Input Changes ---
-
-  // Handles changes for the donation amount input
-  const handleAmountChange = (e) => {
-    const value = e.target.value;
-    // Allows only empty string or numbers (integers or decimals)
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
-      setAmount(value);
+  // IMPORTANT FIX: isValid now only returns a boolean, no state updates!
+  const isValid = () => {
+    if (!amount || parseFloat(amount) <= 0 || !name.trim()) {
+      return false;
     }
-    setFeedback({ message: '', type: '' }); // Clear feedback on any input change
+    if (method !== 'MPesa' && !email.trim()) {
+      return false;
+    }
+    if (method === 'MPesa' && (!phone.trim() || !/^\+?\d{9,15}$/.test(phone.trim()))) {
+      return false;
+    }
+    return true;
   };
 
-  // Handles changes for the currency dropdown selection
-  const handleCurrencyChange = (e) => {
-    setCurrency(e.target.value);
-    setFeedback({ message: '', type: '' }); // Clear feedback on currency change
-  };
-
-  // Handles changes for the donation frequency radio buttons
-  const handleFrequencyChange = (e) => {
-    setDonationFrequency(e.target.value);
-    setFeedback({ message: '', type: '' }); // Clear feedback on frequency change
-  };
-
-  // Handles the main form submission for payment processing
-  const handlePaymentSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
-    setFeedback({ message: '', type: '' }); // Clear previous feedback messages
-
-    // --- Form Validation ---
-    if (!amount || parseFloat(amount) <= 0) {
-      setFeedback({ message: 'Please enter a valid donation amount.', type: 'error' });
-      return;
-    }
-    if (!currency) { // Ensure a currency has been selected
-      setFeedback({ message: 'Please select a currency.', type: 'error' });
-      return;
-    }
-    if (!selectedMethod) { // Ensure a payment method has been selected
-      setFeedback({ message: 'Please select a payment method.', type: 'error' });
+  const handleSubmit = async () => {
+    // Moved message setting based on validation to handleSubmit
+    if (!isValid()) {
+      // Only set message if validation fails, and only when submit is attempted
+      if (!amount || parseFloat(amount) <= 0 || !name.trim()) {
+          setMessage('Please enter a valid amount and your name.');
+      } else if (method !== 'MPesa' && !email.trim()) {
+          setMessage('Please enter your email address.');
+      } else if (method === 'MPesa' && (!phone.trim() || !/^\+?\d{9,15}$/.test(phone.trim()))) {
+          setMessage('Please enter a valid M-Pesa phone number (e.g., 2547XXXXXXXX).');
+      } else {
+          setMessage('Please fill all required fields.'); // Fallback if other specific messages don't match
+      }
       return;
     }
 
-    // Log data for debugging/development purposes
-    console.log(`Initiating ${donationFrequency} donation of ${currency} ${amount} via ${selectedMethod}...`);
+    setLoading(true);
+    setMessage(''); // Clear previous messages before new attempt
 
     try {
-      // --- Backend API Call (Simulated) ---
-      // In a real application, replace this with your actual backend endpoint
-      // and ensure the data sent matches what your API expects.
-      const response = await fetch('/api/process-donation', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount: parseFloat(amount), // Convert amount to a number
-          currency: currency,          // Send the selected currency
-          paymentMethod: selectedMethod,
-          donationFrequency: donationFrequency,
-          donorInfo: {
-            name: donorName,
-            email: donorEmail,
-          },
-        }),
-      });
-
-      const data = await response.json(); // Parse the JSON response from the backend
-
-      if (response.ok) { // Check if the response status is 2xx (success)
-        setFeedback({ message: data.message || 'Donation initiated successfully! Thank you for your support.', type: 'success' });
-        // Optionally close the popup after a delay to allow the user to read the success message
-        setTimeout(() => {
-          onClose(); // Call the onClose prop to close the popup
-        }, 3000); // Close after 3 seconds
-      } else {
-        // Handle server-side errors
-        setFeedback({ message: data.message || 'Donation failed: An unknown error occurred.', type: 'error' });
-        console.error('Backend error:', data);
+      let res;
+      if (method === 'Flutterwave') {
+        res = await axios.post('http://localhost:8081/api/flutterwave/pay', { name, email, amount: parseFloat(amount) });
+        window.location.href = res.data.paymentLink;
+      } else if (method === 'MPesa') {
+        res = await axios.post('http://localhost:8081/api/mpesa/stkpush', { phone, amount: parseFloat(amount) });
+        setMessage(res.data.message);
+      } else if (method === 'Stripe') {
+        res = await axios.post('http://localhost:8081/api/stripe/create-checkout-session', { name, email, amount: parseFloat(amount) });
+        window.location.href = res.data.url;
+      } else if (method === 'PayPal') {
+        setMessage('Please use the PayPal button below to complete your donation.');
       }
     } catch (error) {
-      // Handle network or other client-side errors
-      console.error('Error sending donation request to backend:', error);
-      setFeedback({ message: 'An error occurred during the donation process. Please try again.', type: 'error' });
-    }
-  };
-
-  // --- Render Payment Method Specific Information ---
-  // Displays instructions based on the selected payment method
-  const renderPaymentMethodInfo = () => {
-    // Format the amount for display with the selected currency
-    const amountDisplay = `${amount || '0'} ${currency}`;
-
-    switch (selectedMethod) {
-      case 'M-Pesa':
-        return (
-          <div className="bg-green-50 p-4 rounded-md text-green-800">
-            <h4 className="font-semibold mb-2">M-Pesa Instructions (Kenya):</h4>
-            {donationFrequency === 'monthly' && (
-              <p className="mb-2 text-sm text-red-700 font-medium">
-                *For monthly M-Pesa donations, please set up a standing order or remember to make a manual transfer each month. We will follow up with details.*
-              </p>
-            )}
-            <p className="mb-1">Follow these steps to donate via M-Pesa:</p>
-            <ol className="list-decimal list-inside ml-2 mt-2 space-y-1">
-              <li>Go to your M-Pesa menu.</li>
-              <li>Select **"Lipa Na M-Pesa"**.</li>
-              <li>Select **"Pay Bill"**.</li>
-              <li>Enter Business No.: <span className="font-bold text-lg">XXXXXX</span> (Replace with your actual Pay Bill Number)</li>
-              <li>Enter Account No.: <span className="font-bold text-lg">SSN_DONATION</span> (Or your organization's specific account identifier)</li>
-              <li>Enter Amount: <span className="font-bold text-lg">{amountDisplay}</span></li> {/* Displays amount with selected currency */}
-              <li>Enter your M-Pesa PIN and Confirm.</li>
-            </ol>
-            <p className="mt-3 text-sm font-medium">
-              *You will receive an M-Pesa confirmation SMS. Your generosity is deeply appreciated!*
-            </p>
-            <p className="mt-2 text-xs italic text-gray-600">
-                Note: M-Pesa transactions are primarily in KES. If you selected a different currency, please ensure conversion is handled on your end.
-            </p>
-          </div>
-        );
-      case 'Flutterwave':
-        return (
-          <div className="bg-blue-50 p-4 rounded-md text-blue-800">
-            <h4 className="font-semibold mb-2">Flutterwave Payment:</h4>
-            <p className="mb-2 text-sm">
-              You will be securely redirected to Flutterwave's payment gateway to complete your {donationFrequency} transaction for **{amountDisplay}**. Flutterwave supports various payment methods including cards, mobile money, and bank transfers across Africa.
-            </p>
-            {donationFrequency === 'monthly' && (
-              <p className="text-sm font-medium text-blue-700">
-                *You will set up the recurring monthly payment on the Flutterwave secure payment gateway.*
-              </p>
-            )}
-            <p className="text-xs italic text-gray-600 mt-2">
-              This ensures compliance and secure handling of payment information.
-            </p>
-          </div>
-        );
-      case 'Stripe':
-        return (
-          <div className="bg-purple-50 p-4 rounded-md text-purple-800">
-            <h4 className="font-semibold mb-2">Stripe Payment:</h4>
-            <p className="mb-2 text-sm">
-              You will be securely redirected to Stripe's payment gateway to complete your {donationFrequency} transaction for **{amountDisplay}** using your credit or debit card. Stripe is a leading global payment processor.
-            </p>
-            {donationFrequency === 'monthly' && (
-              <p className="text-sm font-medium text-purple-700">
-                *You will set up the recurring monthly payment on the Stripe secure payment page.*
-              </p>
-            )}
-            <p className="text-xs italic text-gray-600 mt-2">
-              All card details are handled directly by Stripe, ensuring maximum security (PCI DSS compliant).
-            </p>
-          </div>
-        );
-      case 'PayPal':
-        return (
-          <div className="bg-indigo-50 p-4 rounded-md text-indigo-800">
-            <h4 className="font-semibold mb-2">PayPal Payment:</h4>
-            <p className="mb-2 text-sm">
-              You will be redirected to PayPal's secure website to complete your {donationFrequency} donation for **{amountDisplay}**. Please note that PayPal may handle transactions in USD or other major currencies, with conversion if applicable.
-            </p>
-            {donationFrequency === 'monthly' && (
-              <p className="text-sm font-medium text-indigo-700">
-                *You will set up the recurring monthly payment on the PayPal platform.*
-              </p>
-            )}
-          </div>
-        );
-      default:
-        return (
-          <p className="text-gray-600 italic text-center">Please select a payment method above to see instructions.</p>
-        );
+      console.error('Donation submission error:', error.response ? error.response.data : error.message);
+      setMessage(error.response?.data?.message || 'An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    // Outer div for the modal overlay
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
-      {/* Inner div for the modal content */}
-      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative animate-fade-in-up flex flex-col max-h-[90vh] overflow-y-auto">
-        {/* Close Button */}
+      <div className="bg-white shadow-xl rounded-lg p-6 w-full max-w-lg relative animate-fade-in-up max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 transition-colors z-10"
@@ -234,168 +94,158 @@ const DonationPopup = ({ onClose, initialMethod }) => {
           <XMarkIcon className="h-6 w-6" />
         </button>
 
-        <h2 className="text-2xl font-bold text-green-800 mb-4 text-center">Make a Donation</h2>
+        <h2 className="text-3xl font-extrabold text-green-700 text-center mb-4">Make a Donation</h2>
+        <p className="text-center text-gray-600 mb-6">Support SSN by donating securely via your preferred method.</p>
 
-        <form onSubmit={handlePaymentSubmit} className="flex-grow flex flex-col">
-          {/* Feedback Message (Success/Error) */}
-          {feedback.message && (
-            <div className={`py-2 px-4 rounded-md text-center text-sm mb-4
-              ${feedback.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              {feedback.message}
-            </div>
-          )}
+        {message && (
+          <div className={`p-3 rounded-md text-sm mb-4 text-center ${
+            message.includes('success') ? 'bg-green-100 text-green-700' :
+            message.includes('error') || message.includes('valid') || message.includes('fill') ? 'bg-red-100 text-red-700' :
+            'bg-blue-100 text-blue-700'
+          }`}>
+            {message}
+          </div>
+        )}
 
-          {/* Donation Amount and Currency Selection Inputs */}
-          <div className="mb-4 flex flex-col sm:flex-row sm:space-x-4">
-            {/* Donation Amount Input */}
-            <div className="flex-1 mb-4 sm:mb-0">
-              <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Donation Amount</label>
+        <div className="mb-4">
+          <label htmlFor="method" className="block text-sm font-medium text-gray-700 mb-1">Select Payment Method</label>
+          <select
+            id="method"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+            value={method}
+            onChange={(e) => {
+              setMethod(e.target.value);
+              setMessage(''); // Clear message on method change
+            }}
+          >
+            <option value="">-- Choose Method --</option>
+            <option value="Flutterwave">Flutterwave</option>
+            <option value="MPesa">MPesa</option>
+            <option value="Stripe">Stripe</option>
+            <option value="PayPal">PayPal</option>
+          </select>
+        </div>
+
+        {method && (
+          <>
+            <div className="mb-4">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
               <input
-                type="text" // Using text to allow for more flexible input handling (e.g., empty string)
-                inputMode="numeric" // Suggests numeric keyboard on mobile devices
-                pattern="[0-9]*\.?[0-9]*" // Basic regex for numbers with optional decimal
-                id="amount"
-                name="amount"
-                value={amount}
-                onChange={handleAmountChange}
+                id="name"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                placeholder="e.g., 50000"
+                placeholder="Lucien Hussein"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setMessage(''); }}
                 required
               />
             </div>
-            {/* Currency Dropdown Selection */}
-            <div className="flex-1">
-              <label htmlFor="currency" className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
-              <select
-                id="currency"
-                name="currency"
-                value={currency}
-                onChange={handleCurrencyChange} // Event handler for currency selection
+
+            {method !== 'MPesa' && (
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input
+                  id="email"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  type="email"
+                  placeholder="hussein@example.com"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setMessage(''); }}
+                  required={method !== 'MPesa'}
+                />
+              </div>
+            )}
+
+            {method === 'MPesa' && (
+              <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number (M-Pesa)</label>
+                <input
+                  id="phone"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                  placeholder="e.g., 2547XXXXXXXX"
+                  value={phone}
+                  onChange={(e) => { setPhone(e.target.value); setMessage(''); }}
+                  required={method === 'MPesa'}
+                  type="tel"
+                />
+              </div>
+            )}
+
+            <div className="mb-6">
+              <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+              <input
+                id="amount"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+                type="number"
+                placeholder="e.g., 100"
+                value={amount}
+                onChange={(e) => { setAmount(e.target.value); setMessage(''); }}
                 required
-              >
-                {currencies.map((curr) => (
-                  <option key={curr.value} value={curr.value}>
-                    {curr.label}
-                  </option>
-                ))}
-              </select>
+                min="1"
+              />
             </div>
-          </div>
+          </>
+        )}
 
-          {/* Donation Frequency Selection (Radio Buttons) */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Donation Frequency:</label>
-            <div className="flex gap-4">
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  className="form-radio text-green-600 h-4 w-4"
-                  name="donationFrequency"
-                  value="one-time"
-                  checked={donationFrequency === 'one-time'}
-                  onChange={handleFrequencyChange}
-                />
-                <span className="ml-2 text-gray-800">One-time</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  className="form-radio text-green-600 h-4 w-4"
-                  name="donationFrequency"
-                  value="monthly"
-                  checked={donationFrequency === 'monthly'}
-                  onChange={handleFrequencyChange}
-                />
-                <span className="ml-2 text-gray-800">Monthly</span>
-              </label>
-            </div>
+        {method && method !== 'PayPal' && (
+          <div className="mt-6">
+            <button
+              onClick={handleSubmit}
+              disabled={loading || !isValid()} // isValid() no longer causes a re-render loop
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {loading ? (
+                <span className="animate-spin h-5 w-5 mr-3 border-b-2 border-white rounded-full" role="status" aria-hidden="true"></span>
+              ) : (
+                `Donate with ${method}`
+              )}
+            </button>
           </div>
+        )}
 
-          {/* Donor Information (Optional) - Name and Email */}
-          <div className="mb-4">
-            <label htmlFor="donorName" className="block text-sm font-medium text-gray-700 mb-1">Your Name (Optional)</label>
-            <input
-              type="text"
-              id="donorName"
-              name="donorName"
-              value={donorName}
-              onChange={(e) => { setDonorName(e.target.value); setFeedback({ message: '', type: '' }); }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="Lucien Hussein"
-            />
+        {method === 'PayPal' && (
+          <div className="mt-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+            <p className="text-center text-gray-700 mb-3">Click the PayPal button below to proceed:</p>
+            <PayPalScriptProvider options={{ 'client-id': PAYPAL_CLIENT_ID }}>
+              <PayPalButtons
+                style={{ layout: 'horizontal', color: 'blue', shape: 'pill' }}
+                createOrder={(data, actions) => {
+                  if (!isValid()) {
+                    setMessage('Please fill in Name and Amount before proceeding with PayPal.');
+                    return actions.reject();
+                  }
+                  return actions.order.create({
+                    purchase_units: [{
+                      amount: {
+                        currency_code: 'USD',
+                        value: amount || '1.00',
+                      },
+                    }],
+                  });
+                }}
+                onApprove={(data, actions) => {
+                  return actions.order.capture().then((details) => {
+                    setMessage(`Donation successful! Thank you, ${details.payer.name.given_name}!`);
+                    console.log('PayPal transaction details:', details);
+                    // You might want to send this success to your backend for recording
+                    // axios.post('/api/paypal/success', { orderId: data.orderID, payerId: data.payerID, details });
+                  }).finally(() => {
+                    setTimeout(() => onClose(), 2000);
+                  });
+                }}
+                onError={(err) => {
+                  setMessage('An error occurred with PayPal. Please try again.');
+                  console.error('PayPal error:', err);
+                }}
+                onCancel={(data) => {
+                  setMessage('PayPal transaction cancelled.');
+                  console.log('PayPal cancelled:', data);
+                }}
+              />
+            </PayPalScriptProvider>
           </div>
-          <div className="mb-6">
-            <label htmlFor="donorEmail" className="block text-sm font-medium text-gray-700 mb-1">Your Email (Optional)</label>
-            <input
-              type="email"
-              id="donorEmail"
-              name="donorEmail"
-              value={donorEmail}
-              onChange={(e) => { setDonorEmail(e.target.value); setFeedback({ message: '', type: '' }); }}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-              placeholder="you@example.com"
-            />
-          </div>
+        )}
 
-          {/* Payment Method Selection Buttons */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Choose Payment Method:</label>
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => { setSelectedMethod('M-Pesa'); setFeedback({ message: '', type: '' }); }}
-                className={`flex items-center justify-center px-4 py-3 rounded-md transition-colors duration-200 text-base font-medium shadow-sm
-                  ${selectedMethod === 'M-Pesa' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}
-                `}
-              >
-                M-Pesa
-              </button>
-              <button
-                type="button"
-                onClick={() => { setSelectedMethod('Flutterwave'); setFeedback({ message: '', type: '' }); }}
-                className={`flex items-center justify-center px-4 py-3 rounded-md transition-colors duration-200 text-base font-medium shadow-sm
-                  ${selectedMethod === 'Flutterwave' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}
-                `}
-              >
-                Flutterwave
-              </button>
-              <button
-                type="button"
-                onClick={() => { setSelectedMethod('Stripe'); setFeedback({ message: '', type: '' }); }}
-                className={`flex items-center justify-center px-4 py-3 rounded-md transition-colors duration-200 text-base font-medium shadow-sm
-                  ${selectedMethod === 'Stripe' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}
-                `}
-              >
-                Stripe
-              </button>
-              <button
-                type="button"
-                onClick={() => { setSelectedMethod('PayPal'); setFeedback({ message: '', type: '' }); }}
-                className={`flex items-center justify-center px-4 py-3 rounded-md transition-colors duration-200 text-base font-medium shadow-sm
-                  ${selectedMethod === 'PayPal' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}
-                `}
-              >
-                PayPal
-              </button>
-            </div>
-          </div>
-
-          {/* Area to display payment method specific instructions/details */}
-          <div className="mb-6">
-            {renderPaymentMethodInfo()}
-          </div>
-
-          {/* Main Submit Button for the form */}
-          <button
-            type="submit"
-            // Button is disabled if amount is invalid, or if no method/currency is selected
-            className="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg font-semibold mt-auto"
-            disabled={!amount || parseFloat(amount) <= 0 || !selectedMethod || !currency}
-          >
-            Confirm & Donate
-          </button>
-        </form>
+        <p className="text-center text-gray-500 mt-6 text-sm">Secure payment via Stripe, M-Pesa, Flutterwave, and PayPal.</p>
       </div>
     </div>
   );
