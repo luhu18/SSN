@@ -157,17 +157,37 @@ const DonationPopup = ({ onClose, initialMethod }) => {
 
             {method === 'MPesa' && (
               <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number (M-Pesa)</label>
-                <input
-                  id="phone"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  placeholder="e.g., 2547XXXXXXXX"
-                  value={phone}
-                  onChange={(e) => { setPhone(e.target.value); setMessage(''); }}
-                  required={method === 'MPesa'}
-                  type="tel"
-                />
-              </div>
+    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number (M-Pesa)</label>
+    <input
+      id="phone"
+      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
+      placeholder="e.g., 07XXXXXXXX or +2547XXXXXXXX" // More explicit placeholder
+      value={phone}
+      onChange={(e) => {
+        // Automatically clean the input: allow digits and an optional leading '+'
+        const cleanedValue = e.target.value.replace(/[^0-9+]/g, '');
+        // Ensure '+' only appears at the very beginning if present
+        if (cleanedValue.startsWith('+')) {
+          setPhone('+' + cleanedValue.slice(1).replace(/\+/g, ''));
+        } else {
+          setPhone(cleanedValue);
+        }
+        setMessage(''); // Clear message on input change
+      }}
+      required={method === 'MPesa'}
+      type="tel"
+      // HTML5 pattern for basic browser-side validation hint
+      // Requires:
+      //   - starts with "07" followed by 8 digits (total 10 digits) OR
+      //   - starts with "+2547" followed by 8 digits (total 13 characters)
+      pattern="^(07\d{8}|\+2547\d{8})$"
+      // Provide a helpful title for users to understand the required format
+      title="Enter a valid M-Pesa number: 07XXXXXXXX or +2547XXXXXXXX"
+      inputMode="numeric" 
+      maxLength="13" 
+      minLength="10"
+    />
+  </div>
             )}
 
             <div className="mb-6">
