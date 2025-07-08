@@ -164,7 +164,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
     <input
       id="phone"
       className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-      placeholder="e.g., 07XXXXXXXX or +2547XXXXXXXX" // More explicit placeholder
+      placeholder="e.g., 2547XXXXXXXX" // More explicit placeholder
       value={phone}
       onChange={(e) => {
         // Automatically clean the input: allow digits and an optional leading '+'
@@ -179,11 +179,11 @@ const DonationPopup = ({ onClose, initialMethod }) => {
       }}
       required={method === 'MPesa'}
       type="tel"
-      pattern="^(07\d{8}|\+2547\d{8})$"
-      title="Enter a valid M-Pesa number: 07XXXXXXXX or +2547XXXXXXXX"
+      pattern="^2547\d{8}$"
+      title="Enter a valid M-Pesa number:  2547XXXXXXXX"
       inputMode="numeric" 
-      maxLength="13" 
-      minLength="10" 
+      maxLength="12" 
+      minLength="12" 
     />
   </div>
             )}
