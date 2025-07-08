@@ -156,7 +156,7 @@ const DonationPopup = ({ onClose, initialMethod }) => {
             )}
 
             {method === 'MPesa' && (
-              <div className="mb-4">
+               <div className="mb-4">
     <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number (M-Pesa)</label>
     <input
       id="phone"
@@ -176,16 +176,11 @@ const DonationPopup = ({ onClose, initialMethod }) => {
       }}
       required={method === 'MPesa'}
       type="tel"
-      // HTML5 pattern for basic browser-side validation hint
-      // Requires:
-      //   - starts with "07" followed by 8 digits (total 10 digits) OR
-      //   - starts with "+2547" followed by 8 digits (total 13 characters)
       pattern="^(07\d{8}|\+2547\d{8})$"
-      // Provide a helpful title for users to understand the required format
       title="Enter a valid M-Pesa number: 07XXXXXXXX or +2547XXXXXXXX"
       inputMode="numeric" 
       maxLength="13" 
-      minLength="10"
+      minLength="10" 
     />
   </div>
             )}
