@@ -57,28 +57,28 @@ const VolunteerPage = () => {
     console.log('Volunteer Application Submitted:', formData);
     // Here you would typically send formData to your backend API
     // Example:
-    // try {
-    //   const response = await fetch('/api/volunteer-application', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const result = await response.json();
-    //   if (response.ok) {
-    //     alert('Application submitted successfully!');
-    //     setFormData({ // Reset form
-    //       firstName: '', lastName: '', email: '', phone: '', country: '',
-    //       interests: [], availability: '', message: '',
-    //     });
-    //   } else {
-    //     alert('Failed to submit application: ' + (result.message || 'Unknown error'));
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting volunteer application:', error);
-    //   alert('An error occurred. Please try again.');
-    // }
+     try {
+      const response = await fetch('/api/volunteer-application', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+       });
+       const result = await response.json();
+       if (response.ok) {
+         alert('Application submitted successfully!');
+         setFormData({ // Reset form
+           firstName: '', lastName: '', email: '', phone: '', country: '',
+           interests: [], availability: '', message: '',
+         });
+       } else {
+         alert('Failed to submit application: ' + (result.message || 'Unknown error'));
+       }
+     } catch (error) {
+       console.error('Error submitting volunteer application:', error);
+       alert('An error occurred. Please try again.');
+    }
   };
 
   return (

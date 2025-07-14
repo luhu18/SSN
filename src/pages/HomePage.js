@@ -14,8 +14,8 @@ const HomePage = () => {
     <>
       {/* 1. Hero Section */}
       <section
-        className="relative bg-cover bg-center text-white py-24 md:py-36 flex items-center justify-center text-center"
-        style={{ backgroundImage: 'url(/Assets/plants2.webp)' }}
+        className="relative bg-cover bg-center text-white py-24 md:py-36 flex items-center justify-center text-center h-screen"
+        style={{backgroundImage: `url(${Organic})`}}
         // IMPORTANT: Make sure you have an image at public/images/hero-students-garden.jpg
         // Optimize this image heavily!
       >

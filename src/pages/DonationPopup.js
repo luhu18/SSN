@@ -64,15 +64,15 @@ const DonationPopup = ({ onClose, initialMethod }) => {
     try {
       let res;
       if (method === 'Flutterwave') {
-        res = await axios.post('http://localhost:5000/api/flutterwave/pay', { name, email, amount: parseFloat(amount) });
+        res = await axios.post('https://ssn-backend-y7lq.onrender.com/api/flutterwave/pay', { name, email, amount: parseFloat(amount) });
         console.log(amount, name, email);
         console.log(res.data.link);
         window.location.href = res.data.link;
       } else if (method === 'MPesa') {
-        res = await axios.post('http://localhost:5000/api/mpesa/payment', { phone, amount: parseFloat(amount) });
+        res = await axios.post('https://ssn-backend-y7lq.onrender.com/api/mpesa/payment', { phone, amount: parseFloat(amount) });
         setMessage(res.data.message);
       } else if (method === 'Stripe') {
-        res = await axios.post('http://localhost:5000/api/stripe/donate', { name, email, amount: parseFloat(amount) });
+        res = await axios.post('https://ssn-backend-y7lq.onrender.com/api/stripe/donate', { name, email, amount: parseFloat(amount) });
         console.log(res);
         window.location.href = res.data.url;
       } else if (method === 'PayPal') {
