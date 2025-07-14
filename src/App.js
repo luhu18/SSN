@@ -15,6 +15,7 @@ const ResourcesPage = lazy(() => import('./pages/ResourcesPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const DonatePage = lazy(() => import('./pages/DonatePage'));
 const VolunteerPage = lazy(() => import('./pages/VolunteerPage'));
+const DonationSuccess = lazy(() => import('./pages/DonationSuccess'))
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 
@@ -55,6 +56,7 @@ function App() {
               <Route path="/resources" element={<ResourcesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/volunteer" element={<VolunteerPage />} />
+              <Route path="/donation-success" element={<DonationSuccess />}/>
 
               <Route
                 path="/donate"
