@@ -66,8 +66,8 @@ const DonationPopup = ({ onClose, initialMethod }) => {
       if (method === 'Flutterwave') {
         res = await axios.post('https://ssn-backend-y7lq.onrender.com/api/flutterwave/pay', { name, email, amount: parseFloat(amount) });
         console.log(amount, name, email);
-        console.log(res.data.link);
-        window.location.href = res.data.link;
+        console.log(res.data.paymentLink);
+        window.location.href = res.data.paymentLink;
       } else if (method === 'MPesa') {
         res = await axios.post('https://ssn-backend-y7lq.onrender.com/api/mpesa/payment', { phone, amount: parseFloat(amount) });
         setMessage(res.data.message);

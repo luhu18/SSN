@@ -58,7 +58,7 @@ const VolunteerPage = () => {
     // Here you would typically send formData to your backend API
     // Example:
      try {
-      const response = await fetch('/api/volunteer-application', {
+      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/volunteer-application', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
