@@ -25,14 +25,14 @@ const countries = [
 const VolunteerPage = () => {
   // State for form fields
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    name: '',
+    // lastName: '',
     email: '',
     phone: '',
-    country: '', // NEW: State for country
-    interests: [],
+    residence: '', // NEW: State for country
+    areaOfInterests: [],
     availability: '',
-    message: '',
+    reason: '',
   });
 
   const handleChange = (e) => {
@@ -40,9 +40,9 @@ const VolunteerPage = () => {
     if (type === 'checkbox') {
       setFormData((prev) => {
         const newInterests = checked
-          ? [...prev.interests, value]
-          : prev.interests.filter((interest) => interest !== value);
-        return { ...prev, interests: newInterests };
+          ? [...prev.areaOfInterests, value]
+          : prev.areaOfInterests.filter((areaOfInterests) => areaOfInterests !== value);
+        return { ...prev, areaOfInterests: newInterests };
       });
     } else {
       setFormData((prev) => ({
@@ -58,7 +58,7 @@ const VolunteerPage = () => {
     // Here you would typically send formData to your backend API
     // Example:
      try {
-      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/volunteer-application', {
+      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/volunteer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,8 +69,8 @@ const VolunteerPage = () => {
        if (response.ok) {
          alert('Application submitted successfully!');
          setFormData({ // Reset form
-           firstName: '', lastName: '', email: '', phone: '', country: '',
-           interests: [], availability: '', message: '',
+           name: '', email: '', phone: '', residence: '',
+           areaOfInterests: [], availability: '', reason: '',
          });
        } else {
          alert('Failed to submit application: ' + (result.message || 'Unknown error'));
@@ -165,16 +165,16 @@ const VolunteerPage = () => {
                   <label htmlFor="firstName" className="block text-gray-700 font-medium mb-2">First Name</label>
                   <input
                     type="text"
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     required
                   />
                 </div>
 
-                <div>
+                {/* <div>
                   <label htmlFor="lastName" className="block text-gray-700 font-medium mb-2">Last Name</label>
                   <input
                     type="text"
@@ -185,7 +185,7 @@ const VolunteerPage = () => {
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     required
                   />
-                </div>
+                </div> */}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -219,9 +219,9 @@ const VolunteerPage = () => {
               <div className="mb-6">
                 <label htmlFor="country" className="block text-gray-700 font-medium mb-2">Country of Residence</label>
                 <select
-                  id="country"
-                  name="country"
-                  value={formData.country}
+                  id="residence"
+                  name="residence"
+                  value={formData.residence}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   required
@@ -243,7 +243,7 @@ const VolunteerPage = () => {
                       id="education"
                       name="interests" // Use the same name for checkboxes to group them for state
                       value="education"
-                      checked={formData.interests.includes('education')}
+                      checked={formData.areaOfInterests.includes('education')}
                       onChange={handleChange}
                       className="mr-2"
                     />
@@ -255,7 +255,7 @@ const VolunteerPage = () => {
                       id="projects"
                       name="interests"
                       value="projects"
-                      checked={formData.interests.includes('projects')}
+                      checked={formData.areaOfInterests.includes('projects')}
                       onChange={handleChange}
                       className="mr-2"
                     />
@@ -267,7 +267,7 @@ const VolunteerPage = () => {
                       id="admin"
                       name="interests"
                       value="admin"
-                      checked={formData.interests.includes('admin')}
+                      checked={formData.areaOfInterests.includes('admin')}
                       onChange={handleChange}
                       className="mr-2"
                     />
@@ -279,7 +279,7 @@ const VolunteerPage = () => {
                       id="other"
                       name="interests"
                       value="other"
-                      checked={formData.interests.includes('other')}
+                      checked={formData.areaOfInterests.includes('other')}
                       onChange={handleChange}
                       className="mr-2"
                     />
@@ -307,19 +307,19 @@ const VolunteerPage = () => {
               </div>
 
               <div className="mb-6">
-                <label htmlFor="message" className="block text-gray-700 font-medium mb-2">Why do you want to volunteer with us?</label>
+                <label htmlFor="reason" className="block text-gray-700 font-medium mb-2">Why do you want to volunteer with us?</label>
                 <textarea
-                  id="message"
-                  name="message"
+                  id="reason"
+                  name="reason"
                   rows="5"
-                  value={formData.message}
+                  value={formData.reason}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   required
                 ></textarea>
               </div>
 
-              <button
+              <button onClick={handleSubmit}
                 type="submit"
                 className="w-full bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >

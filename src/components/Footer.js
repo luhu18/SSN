@@ -38,7 +38,7 @@ const Footer = () => {
 
     try {
       // This is the endpoint your backend will need to provide
-      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api', {
+      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/newsletter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
