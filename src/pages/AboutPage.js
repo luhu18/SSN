@@ -11,7 +11,8 @@ const AboutPage = () => {
       <PageHeader
         title="About Us"
         description="Learn about our mission, vision, and the team behind Sustainable Schools Network"
-        backgroundImage="/images/about-header.jpg"
+         backgroundImage="/images/ssn_dot.svg"
+        isPattern={true}
       />
 
       <section className="py-16 bg-white">

@@ -89,8 +89,8 @@ const ContactPage = () => {
       <PageHeader
         title="Contact Us"
         description="Get in touch with the Sustainable Schools Network team"
-        // Ensure this image exists in your public/images folder
-        backgroundImage="/images/contact-header.jpg" 
+        backgroundImage="/images/ssn_dot.svg"
+        isPattern={true} 
       />
 
       <section className="py-16 bg-white">

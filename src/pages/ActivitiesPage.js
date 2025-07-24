@@ -3,15 +3,15 @@ import PageHeader from '../components/PageHeader';
 
 // Using a single placeholder image to avoid import errors for now
 // Remember to replace this with specific image imports and usage later!
-import Image from '../Assets/Gerden2.webp';
-import Cleanup from '../Assets/cleanups.webp'
-import Admin from '../Assets/admin.webp'
-import Plantt from '../Assets/planttt.webp'
-import Planting from '../Assets/planting.webp'
-import Image2 from '../Assets/plants2.webp';
-import Image3 from '../Assets/TAEW.webp';
-import Image4 from '../Assets/seedling planting.webp';
-import Image5 from '../Assets/school gerden.webp'
+import Image from '../Assets/Organic Farming 1st tile.webp';
+import Cleanup from '../Assets/Cleanup Campaign.webp'
+import Admin from '../Assets/Emporing Schools for a greener future.webp'
+import Plantt from '../Assets/Tree planting.webp'
+import Planting from '../Assets/School Gardeningdays-WA0034.webp'
+import Image2 from '../Assets/School Gardeningdays-WA0034.webp';
+import Image3 from '../Assets/School Gardens &Food forsts.webp';
+import Image4 from '../Assets/Tree planting.webp';
+import Image5 from '../Assets/School Gardens &Food forsts.webp'
 
 
 
@@ -74,8 +74,8 @@ const ActivitiesPage = () => {
       <PageHeader
         title="Our Activities & Impact"
         description="Explore the hands-on initiatives transforming schools and communities."
-        // Using the placeholder image for the header background
-        backgroundImage={Image}
+         backgroundImage="/images/ssn_dot.svg"
+        isPattern={true}
       />
 
       {/* Highlight Key Activities Section */}
@@ -91,6 +91,7 @@ const ActivitiesPage = () => {
                     src={activity.image} // Using the placeholder image
                     alt={activity.alt}
                     className="rounded-xl shadow-xl w-full h-72 object-cover object-center transform transition duration-500 hover:scale-105"
+                    loading='lazy'
                   />
                 </div>
                 <div className="md:w-1/2">
@@ -122,6 +123,7 @@ const ActivitiesPage = () => {
                   src={image.src} // Using the placeholder image for all gallery items
                   alt={image.alt}
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
+                  loading='lazy'
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <p className="text-white text-center text-lg font-semibold px-4">{image.alt}</p>

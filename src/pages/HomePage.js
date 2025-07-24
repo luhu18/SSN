@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// You might need to import specific Heroicons if you use them for impact highlights or program cards
+
 // import { SchoolIcon, TreeIcon, RecycleIcon } from '@heroicons/react/24/solid'; // Example icons
 //Images from Assets 
-import Image from '../Assets/planting.webp';
-import Camping from '../Assets/camping.webp';
-import Plant from '../Assets/plants2.webp'
-import Organic from '../Assets/Organic.webp'
+import Image from '../Assets/Tree planting.webp';
+import Camping from '../Assets/Eco Summer camps.webp';
+import Plant from '../Assets/School Gardens &Food forsts.webp'
+import Organic from '../Assets/Organic Farming 1st tile.webp';
+
 
 const HomePage = () => {
   return (
@@ -15,9 +16,8 @@ const HomePage = () => {
       {/* 1. Hero Section */}
       <section
         className="relative bg-cover bg-center text-white py-24 md:py-36 flex items-center justify-center text-center h-screen"
-        style={{backgroundImage: `url(${Organic})`}}
-        // IMPORTANT: Make sure you have an image at public/images/hero-students-garden.jpg
-        // Optimize this image heavily!
+        style={{ backgroundImage: `url('/Emporing Schools for a greener future.webp')` }}
+       
       >
         <div className="absolute inset-0 bg-black opacity-60"></div> {/* Overlay for readability */}
         <div className="relative z-10 p-4 max-w-4xl mx-auto">
@@ -29,13 +29,13 @@ const HomePage = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fadeInUp delay-400">
             <Link
-              to="/volunteer" // Link to your Volunteer page
+              to="/volunteer" // Link to  Volunteer page
               className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105"
             >
               Get Involved
             </Link>
             <Link
-              to="/donate" // Link to your Donate page
+              to="/donate" // Link to  Donate page
               className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105"
             >
               Donate

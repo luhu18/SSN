@@ -1,16 +1,27 @@
 import React from 'react';
 
-const PageHeader = ({ title, description, backgroundImage }) => {
+const PageHeader = ({ title, description, backgroundImage, isPattern = false }) => {
+  
+  const backgroundStyles = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundPosition: 'center',
+    opacity: '0.9' 
+
+  };
+
+  if (isPattern) {
+    backgroundStyles.backgroundRepeat = 'repeat';
+    backgroundStyles.backgroundSize = 'auto';
+  } else {
+    backgroundStyles.backgroundRepeat = 'no-repeat'; 
+    backgroundStyles.backgroundSize = 'cover';
+  }
+
   return (
     <div className="relative bg-gray-900">
-      <div 
+      <div
         className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: '0.4'
-        }}
+        style={backgroundStyles} 
       ></div>
       <div className="relative z-10 container mx-auto px-4 py-24">
         <div className="max-w-4xl mx-auto text-center">

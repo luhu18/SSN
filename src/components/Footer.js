@@ -171,7 +171,7 @@ const Footer = () => {
               <button
                onClick={handleNewsletterSubmit}
                 type="submit"
-                className="w-full sm:w-auto bg-green-600 text-white px-5 py-2 rounded-md sm:rounded-r-md sm:rounded-l-none hover:bg-green-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto bg-gray-900 text-white px-5 py-2 rounded-md sm:rounded-r-md sm:rounded-l-none hover:bg-green-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isSubmitting} // Disable button during submission
               >
                 {isSubmitting ? 'Subscribing...' : 'Subscribe'}

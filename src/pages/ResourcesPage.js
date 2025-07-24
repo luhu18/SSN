@@ -7,7 +7,8 @@ const ResourcesPage = () => {
       <PageHeader 
         title="Resources & Updates" 
         description="Educational materials and latest news from Sustainable Schools Network"
-        backgroundImage="/images/resources-header.jpg"
+         backgroundImage="/images/ssn_dot.svg"
+        isPattern={true}
       />
       
       <section className="py-16 bg-white">

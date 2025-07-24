@@ -44,12 +44,12 @@ const DonatePage = ({ openDonationPopup }) => {
             We ensure your contribution is used efficiently and effectively to maximize impact. Here's a general breakdown:
           </p>
           <ul className="list-disc list-inside text-left mx-auto max-w-sm text-gray-700">
-            <li className="mb-1">**70% Programs & Projects:** Direct funding for school initiatives, training, and resources.</li>
-            <li className="mb-1">**20% Operational Costs:** Administrative support, outreach, and logistics to run our programs.</li>
-            <li className="mb-1">**10% Capacity Building:** Research, development, and expansion of our sustainable solutions.</li>
+            <li className="mb-1"><span className='font-bold text-blue-700'>70% Programs & Projects:</span> Direct funding for school initiatives, training, and resources.</li>
+            <li className="mb-1"><span className='font-bold font-bold text-blue-700'>20% Operational Costs:</span> Administrative support, outreach, and logistics to run our programs.</li>
+            <li className="mb-1"><span className='font-bold font-bold text-blue-700'>10% Capacity Building: </span>Research, development, and expansion of our sustainable solutions.</li>
           </ul>
         </div>
-        <img src="/image_224838.jpg" alt="Impact of donations" className="mx-auto rounded-lg shadow-lg max-w-full h-auto md:max-w-xl" /> {/* Replace with an actual impactful image */}
+        <img src="/Emporing Schools for a greener future.webp" alt="Impact of donations" className="mx-auto rounded-lg shadow-lg max-w-full h-auto md:max-w-xl" /> {/* Replace with an actual impactful image */}
       </section>
 
       <section className="mb-12 bg-green-700 text-white p-8 rounded-lg text-center shadow-lg">
