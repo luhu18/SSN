@@ -2,18 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="./ssn_logo.webp" type="image/svg+xml" />
+    <!-- Corrected favicon type attribute to image/webp -->
+    <link rel="icon" href="./ssn_logo.webp" type="image/webp" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="Sustainable Schools Network - Building a greener future through education"
     />
+    <!-- Using %PUBLIC_URL% for consistent asset paths handled by React build -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Sustainable Schools Network</title>
+
+    <!-- Preloading critical hero images for faster loading -->
+    <link rel="preload" href="/images/Emporing Schools for a greener future.webp" as="image" type="image/webp" />
+
+    <!-- Open Graph Meta Tags (for Facebook, LinkedIn, WhatsApp, etc.) -->
+    <meta property="og:title" content="Sustainable Schools Network" />
+    <meta property="og:description" content="Building a greener future through education in Uganda." />
+    <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
+    <!-- IMPORTANT: Replace with your actual deployed website URL if not using a relative path -->
+    <meta property="og:url" content="https://ssn-pr5g.onrender.com/" />
+    <meta property="og:type" content="website" />
+    <!-- Added og:site_name for better social media display -->
+    <meta property="og:site_name" content="Sustainable Schools Network" />
+
+    <!-- Twitter Card Meta Tags (for Twitter) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@SSNUganda" />
+    <meta name="twitter:title" content="Sustainable Schools Network" />
+    <meta name="twitter:description" content="Empowering schools for a greener future." />
+    <!-- Using %PUBLIC_URL% for consistent asset paths -->
+    <meta name="twitter:image" content="%PUBLIC_URL%/twitter-image.jpg" />
   </head>
   <body>
+    <!-- More concise noscript message -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>

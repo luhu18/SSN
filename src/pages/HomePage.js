@@ -16,7 +16,7 @@ const HomePage = () => {
       {/* 1. Hero Section */}
       <section
         className="relative bg-cover bg-center text-white py-24 md:py-36 flex items-center justify-center text-center h-screen"
-        style={{ backgroundImage: `url('/Emporing Schools for a greener future.webp')` }}
+        style={{ backgroundImage: `url('/images/Emporing Schools for a greener future.webp')` }}
        
       >
         <div className="absolute inset-0 bg-black opacity-60"></div> {/* Overlay for readability */}
