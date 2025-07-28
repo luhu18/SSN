@@ -1,11 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-// Receive openDonationPopup as a prop to trigger the modal
-const DonatePage = ({ openDonationPopup }) => {
-  const handleDonateClick = (e) => {
-    e.preventDefault();
-    openDonationPopup(); // Call the function to open the donation popup
-  };
+
+const DonatePage = () => {
+  // Your GoFundMe campaign URL
+  const goFundMeCampaignUrl = "https://www.gofundme.com/f/supporting-sustainable-schools-network-ssn";
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -49,47 +46,23 @@ const DonatePage = ({ openDonationPopup }) => {
             <li className="mb-1"><span className='font-bold font-bold text-blue-700'>10% Capacity Building: </span>Research, development, and expansion of our sustainable solutions.</li>
           </ul>
         </div>
-        <img src="/Emporing Schools for a greener future.webp" alt="Impact of donations" className="mx-auto rounded-lg shadow-lg max-w-full h-auto md:max-w-xl" /> {/* Replace with an actual impactful image */}
+        <img src="images/Emporing Schools for a greener future.webp" alt="Impact of donations" className="mx-auto rounded-lg shadow-lg max-w-full h-auto md:max-w-xl" />
       </section>
 
       <section className="mb-12 bg-green-700 text-white p-8 rounded-lg text-center shadow-lg">
-        <h2 className="3xl font-bold mb-4">Ready to Make an Impact?</h2>
+        <h2 className="text-3xl font-bold mb-4">Ready to Make an Impact?</h2>
         <p className="text-xl mb-6">
           Your support, no matter the size, helps us build a brighter, more sustainable future for Uganda.
         </p>
-        <button
-          onClick={handleDonateClick}
-          className="bg-white text-green-700 px-8 py-4 rounded-full text-xl font-semibold hover:bg-gray-100 transition-colors duration-300 shadow-xl"
+        {/* Donation Button/Link */}
+        <a
+          href={goFundMeCampaignUrl}
+          target="_blank" // Opens in a new tab
+          rel="noopener noreferrer" // Security best practice for target="_blank"
+          className="inline-block bg-white text-green-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-green-100 transition duration-300 ease-in-out shadow-lg"
         >
-          Donate Now
-        </button>
-      </section>
-
-      <section>
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4 text-center">Other Ways to Give</h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-purple-50 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-purple-700 mb-2">Monthly Giving</h3>
-            <p className="text-gray-600 mb-3">
-              Become a recurring donor and provide consistent support that allows us to plan long-term projects and sustain our efforts. It's easy to set up and manage.
-            </p>
-            <button
-              onClick={handleDonateClick} // Or a specific handler for recurring if different
-              className="text-purple-600 hover:underline font-medium"
-            >
-              Learn More about Monthly Giving
-            </button>
-          </div>
-          <div className="bg-orange-50 p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-bold text-orange-700 mb-2">Corporate Partnerships</h3>
-            <p className="text-gray-600 mb-3">
-              Businesses can partner with us to support specific projects, engage in CSR initiatives, or contribute through employee matching programs.
-            </p>
-            <Link to="/contact" className="text-orange-600 hover:underline font-medium">
-              Contact Us to Partner
-            </Link>
-          </div>
-        </div>
+          Donate on GoFundMe
+        </a>
       </section>
     </div>
   );

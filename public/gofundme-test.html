@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoFundMe Widget Direct Test</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .gfm-embed { max-width: 400px; margin: 20px auto; border: 1px solid #ccc; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>GoFundMe Widget Direct Test</h1>
+    <p>If the widget appears below, then the issue is with React. If not, the issue is with the GoFundMe embed code itself or your network/location.</p>
+
+    <div class="gfm-embed" data-url="https://www.gofundme.com/f/supporting-sustainable-schools-network-ssn/widget/large?sharesheet=undefined&attribution_id=sl:01b1b87a-7f32-4203-92ea-59d346e7f81d"></div>
+
+    <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+
+    <script>
+        // Optional: Basic logging to confirm script execution
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('gofundme-test.html: DOMContentLoaded');
+            setTimeout(() => {
+                if (window._gfm && typeof window._gfm.render === 'function') {
+                    console.log('gofundme-test.html: _gfm.render IS available after delay.');
+                } else {
+                    console.warn('gofundme-test.html: _gfm.render IS NOT available after delay. Check GoFundMe embed code or network.');
+                }
+            }, 1500); // Give it a bit more time than in React
+        });
+    </script>
+</body>
+</html>

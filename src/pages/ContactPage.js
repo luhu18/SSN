@@ -231,7 +231,7 @@ const ContactPage = () => {
                   onClick={handleContactFormSubmit}
                     type="submit"
                     className="bg-green-600 text-white px-6 py-3 rounded-md font-medium hover:bg-green-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={isSubmitting} // Disable button during submission
+                    disabled={isSubmitting} 
                   >
                     {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
@@ -247,27 +247,13 @@ const ContactPage = () => {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold mb-10 text-center text-green-700">Find Us</h2>
             <div className="bg-white p-4 rounded-lg shadow-md">
-              {/* Replace with an actual map embed */}
+
+
+              
               <div className="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-                {/* To embed a Google Map:
-                  1. Go to Google Maps.
-                  2. Search for your location (e.g., "Kampala, Uganda").
-                  3. Click "Share" -> "Embed a map" -> Copy the HTML.
-                  4. Paste the iframe src into the src attribute below.
-                  Ensure you update the address and phone numbers in the Contact Info section as well,
-                  as I've made assumptions based on the footer's content and current location context.
-                */}
-                 <iframe 
-                   src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d178.89782341226032!2d32.25050873698847!3d0.5282678712653968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x177cfd2cd22734e3%3A0x728ce0411c409f91!2sG7H2%2B76M%20Namayumba%20Cell%2C%20Namayumba%2C%20Uganda!3m2!1d0.5282167999999999!2d32.2505501!5e1!3m2!1sen!2ske!4v1751547347749!5m2!1sen!2ske"referrerpolicy="no-referrer-when-downgrade"
-                   width="100%" 
-                   height="100%" 
-                   title='Our Location'
-                   style={{ border: 0 }} // Use JSX style object for inline styles
-                   allowFullScreen="" 
-                   loading="lazy" 
-                   referrerPolicy="no-referrer-when-downgrade"
-                   aria-label="Google Map of Kampala, Uganda" // Added for accessibility
-                 ></iframe>
+
+                {/* To embed a Google Map*/}
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d45794.944323979405!2d31.80950959650512!3d0.8334184406664267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177cb95f429a2b13%3A0xbb6bedc1ce8cf5d0!2sLwamata%2C%20Uganda!5e1!3m2!1sen!2ske!4v1753691270895!5m2!1sen!2ske" width="100%" height="100%" style={{border:0}} allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lwamata"></iframe>
               </div>
             </div>
           </div>

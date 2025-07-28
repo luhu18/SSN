@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; // Import useState
 import { Link } from 'react-router-dom';
+import { RiMastodonFill } from 'react-icons/ri';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ const Footer = () => {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setMessage(''); // Clear message on input change
+    setMessage(''); // 
   };
 
   const validateEmail = (email) => {
@@ -98,14 +99,13 @@ const Footer = () => {
                 <svg className="w-5 h-5 mr-2 text-green-400 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
                 </svg>
-                Kakuma, Turkana County, Kenya<br />
-                Kampala, Uganda
+                Kiboga District, Lwamata Town Council, Lunnya Village, Uganda
               </p>
               <p className="flex items-center">
                 <svg className="w-5 h-5 mr-2 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
-                Kenya: +254 7XX XXX XXX <br/>
+                Uganda: +256 779763525<br/>
                 Uganda: +256 783 605958
               </p>
               <p className="flex items-center">
@@ -129,11 +129,16 @@ const Footer = () => {
                 </svg>
               </a>
               {/* Twitter (X) */}
-              <a href="https://twitter.com/yoursustainableschoolsnetwork" target="_blank" rel="noopener noreferrer" aria-label="Twitter (X)" className="text-white hover:text-green-300 transition-colors duration-200">
-                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.901 1.153C20.61 1.94 22 4.195 22 5.485c0 1.29-.982 2.37-2.345 2.37-.89 0-1.554-.42-2.023-1.074.887.11 1.77.01 2.65-.292.01-.01-.01-.01-.01-.01-.89 1.76-2.618 3.015-4.418 3.015-2.083 0-3.882-1.396-4.63-3.32-.473-.01-.95-.01-1.42.02 0 0-.01.01-.01.01-.483 1.44-.733 2.92-.733 4.41s.25 2.97.733 4.41c.01 0 .01.01.01.01.47.03.947.03 1.42.02 0 0 .01 0 .01-.01.748 1.924 2.547 3.32 4.63 3.32 1.79 0 3.52-.756 4.4-1.92.89.11 1.77.01 2.65-.29.01-.01-.01-.01-.01-.01.01.89-.982 2.37-2.345 2.37-.89 0-1.554-.42-2.023-1.074-.887.11-1.77.01-2.65-.292.01-.01-.01-.01-.01-.01-.89 1.76-2.618 3.015-4.418 3.015-2.083 0-3.882-1.396-4.63-3.32-.473-.01-.95-.01-1.42.02 0 0-.01.01-.01.01-.483 1.44-.733 2.92-.733 4.41s.25 2.97.733 4.41c.01 0 .01.01.01.01.47.03.947.03 1.42.02 0 0 .01 0 .01-.01.748 1.924 2.547 3.32 4.63 3.32 1.79 0 3.52-.756 4.4-1.92.89.11 1.77.01 2.65-.29.01-.01-.01-.01-.01-.01z" />
-                </svg>
-              </a>
+             <a
+  href="https://mastodon.social/@ehsenvironmentalclub1" 
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Mastodon"
+  className="text-white hover:text-green-300 transition-colors duration-200"
+>
+  {/* Use the FaMastodon component directly */}
+  <RiMastodonFill className="w-7 h-7" />
+</a>
               {/* LinkedIn */}
               <a href="https://www.linkedin.com/company/sustainable-schools-network-ssn-1/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-white hover:text-green-300 transition-colors duration-200">
                 <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
