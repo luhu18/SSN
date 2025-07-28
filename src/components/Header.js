@@ -71,7 +71,7 @@ const Header = () => {
           <Link to="/resources" className="text-green-600 hover:text-green-800 block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Contact</Link>
           <Link to="/donate" className="text-green-600 hover:text-green-800 block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Donate</Link>
           <Link to="/volunteer" className="text-green-600 hover:text-green-800 block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Volunteer</Link>
-          <Link to="/blogs" className="text-green-600 hover:text-green-800 block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Blogs</Link>
+          <Link to="/blog" className="text-green-600 hover:text-green-800 block px-3 py-2 rounded-md text-base font-medium" onClick={() => setIsMenuOpen(false)}>Blogs</Link>
         </div>
       </div>
     </header>
