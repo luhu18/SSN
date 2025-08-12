@@ -1,71 +1,70 @@
 import React from 'react';
 import PageHeader from '../components/PageHeader';
 
-// Using a single placeholder image to avoid import errors for now
-// Remember to replace this with specific image imports and usage later!
+
 import Image from '../Assets/Organic Farming 1st tile.webp';
 import Cleanup from '../Assets/Cleanup Campaign.webp'
 import Admin from '../Assets/Emporing Schools for a greener future.webp'
 import Plantt from '../Assets/Tree planting.webp'
-import Planting from '../Assets/School Gardeningdays-WA0034.webp'
-import Image2 from '../Assets/School Gardeningdays-WA0034.webp';
-import Image3 from '../Assets/School Gardens &Food forsts.webp';
-import Image4 from '../Assets/Tree planting.webp';
-import Image5 from '../Assets/School Gardens &Food forsts.webp'
+import Planting from '../Assets/cleaning__garden.webp'
+import Image2 from '../Assets/School Gardening days.webp';
+import Image3 from '../Assets/thriving__crops.webp';
+import Image4 from '../Assets/teacher__workshop.webp';
+import learningOutdoor from '../Assets/learning__outdoor.webp'
 
 
 
 const ActivitiesPage = () => {
-  // Define your key activities data
+ 
   const keyActivities = [
     {
       title: "Fighting Hidden Hunger",
       description: "Our program addresses malnutrition by establishing sustainable school gardens that yield nutrient-rich crops. Students learn to cultivate a variety of staples like **potatoes, bananas, cassava, maize, beans, and leafy greens**, ensuring access to fresh food and combating nutritional deficiencies within the school and community.",
-      image: Image, // Placeholder image
+      image: Image, 
       alt: "Students harvesting diverse crops from a school garden",
       date: "Ongoing Initiative"
     },
     {
       title: "Cleanup Campaigns",
       description: "We organize regular cleanup campaigns in collaboration with schools and local communities. These initiatives not only beautify the environment but also educate participants on proper waste management, recycling, and the importance of a clean living space for health and sustainability.",
-      image: Cleanup, // Placeholder image
+      image: Cleanup, 
       alt: "Students participating in a community cleanup campaign",
       date: "Monthly Events"
     },
     {
       title: "School Gardening Days",
       description: "Hands-on school gardening days are central to our practical approach to environmental education. Students actively participate in planting, nurturing, and harvesting, developing practical agricultural skills, fostering a connection with nature, and contributing to their school's food security.",
-      image: Admin, // Placeholder image
+      image: Admin, 
       alt: "Students engaged in school gardening activities",
       date: "Seasonal Activities"
     },
     {
       title: "Environmental Education Workshops",
       description: "We conduct interactive workshops for students and teachers focused on critical environmental topics. These sessions cover climate change awareness, biodiversity conservation, water harvesting, sustainable agriculture techniques, and the promotion of eco-friendly practices within school compounds and beyond.",
-      image: Plantt, // Placeholder image
+      image: Plantt, 
       alt: "Students and teachers in an environmental education workshop",
       date: "Quarterly Workshops"
     },
   ];
 
-  // Define your timeline milestones data
+  // Timeline milestones 
   const milestones = [
     { year: 2024, description: "Launched 'Green Schools Challenge' across 10 new schools in Kampala." },
     { year: 2023, description: "Expanded 'Fighting Hidden Hunger' program to include 5,000 additional students in Kakuma." },
     { year: 2023, description: "Conducted 15 teacher training workshops for 150 educators." },
-    { year: 2022, description: "Established our first pilot school gardens in Kakuma, Turkana County, Kenya." },
+    { year: 2022, description: "Established our first pilot school gardens in Uganda" },
     { year: 2021, description: "Initiated partnerships with local government and community leaders in Uganda." },
     { year: 2020, description: "Founded Sustainable Schools Network with a focus on environmental education." },
   ];
 
-  // Images for the photo gallery - all using the same placeholder image for now
+  // Images for the photo gallery 
   const galleryImages = [
     { src: Planting , alt: "Students cleaning up the school grounds." },
-    { src: Image4, alt: "Children planting seedlings in a garden." },
-    { src: Image3, alt: "Teachers attending an environmental education workshop." },
-    { src: Image5, alt: "A thriving school garden with various crops." },
-    { src: Image2, alt: "Students tending to a growing school garden." },
-    { src: Image, alt: "Children learning about nature outdoors." },
+    { src: Image3, alt: "Children planting seedlings in a garden." },
+    { src: Image4, alt: "Teachers attending an environmental education workshop." },
+    { src: Image2, alt: "A thriving school garden with various crops." },
+    { src: Image, alt: "Students tending to a growing school garden." },
+    { src: learningOutdoor, alt: "Children learning about nature outdoors." },
   ];
 
 
@@ -120,7 +119,7 @@ const ActivitiesPage = () => {
             {galleryImages.map((image, index) => (
               <div key={index} className="relative overflow-hidden rounded-lg shadow-lg group">
                 <img
-                  src={image.src} // Using the placeholder image for all gallery items
+                  src={image.src} 
                   alt={image.alt}
                   className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
                   loading='lazy'
