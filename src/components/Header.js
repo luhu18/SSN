@@ -48,7 +48,7 @@ const Header = () => {
             <Link to="/resources" className="text-green-600 hover:text-green-800">Resources</Link>
             <Link to="/contact" className="text-green-600 hover:text-green-800">Contact</Link>
             <Link to="/volunteer" className="text-green-600 hover:text-green-800">Volunteer</Link>
-            <Link to="/blog" className="text-green-600 hover:text-green-800">Blogs</Link>
+            {/* <Link to="/blog" className="text-green-600 hover:text-green-800">Blogs</Link> */}
           </div>
 
           {/* Donate button - now explicitly spaced from the previous group */}

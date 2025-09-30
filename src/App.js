@@ -12,8 +12,8 @@ const ResourcesPage = lazy(() => import('./pages/ResourcesPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const DonatePage = lazy(() => import('./pages/DonatePage'));
 const VolunteerPage = lazy(() => import('./pages/VolunteerPage'));
-const BlogPage = lazy(() => import('./pages/BlogPage'));
-const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail'));
+// const BlogPage = lazy(() => import('./pages/BlogPage'));
+// const BlogPostDetail = lazy(() => import('./pages/BlogPostDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const Loading = () => (
@@ -39,8 +39,8 @@ function App() {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/volunteer" element={<VolunteerPage />} />
               <Route path="/donate" element={<DonatePage/>} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogPostDetail />} />
+              {/* <Route path="/blog" element={<BlogPage />} /> */}
+              {/* <Route path="/blog/:slug" element={<BlogPostDetail />} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
