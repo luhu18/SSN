@@ -39,7 +39,7 @@ const Footer = () => {
 
     try {
       // This is the endpoint your backend will need to provide
-      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/newsletter', {
+      const response = await fetch('https://ssn-backend.vercel.app/api/newsletter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,12 +48,14 @@ const Footer = () => {
       });
 
       const data = await response.json();
+      console.log("response is :", response);
 
       if (response.ok) {
         setMessage(data.message || 'Thank you for subscribing!');
         setMessageType('success');
         setEmail(''); // Clear the email input on success
       } else {
+        console.log("response error is :", response);
         setMessage(data.message || 'Subscription failed. Please try again.');
         setMessageType('error');
       }

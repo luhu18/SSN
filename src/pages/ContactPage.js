@@ -52,7 +52,8 @@ const ContactPage = () => {
 
     try {
       // This is the endpoint your backend will need to provide
-      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/contact', {
+      //https://ssn-backend-y7lq.onrender.com
+      const response = await fetch('https://ssn-backend.vercel.app/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

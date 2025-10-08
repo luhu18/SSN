@@ -109,7 +109,7 @@ const VolunteerPage = () => {
       await new Promise(resolve => setTimeout(resolve, 500));
 
       // Send form data to the backend API
-      const response = await fetch('https://ssn-backend-y7lq.onrender.com/api/volunteer', {
+      const response = await fetch('https://ssn-backend.vercel.app/api/volunteer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
